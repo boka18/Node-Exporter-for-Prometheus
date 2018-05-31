@@ -24,7 +24,7 @@ After=network-online.target
 [Service]
 User=node_exporter
 Group=node_exporter
-Type=oneshot
+Type=simple
 ExecStart=/usr/local/bin/node_exporter --web.listen-address=:8080
 
 [Install]
