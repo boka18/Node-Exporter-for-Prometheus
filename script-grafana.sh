@@ -39,8 +39,6 @@ server {
     listen 9100 default_server;
     listen [::]:9100 default_server;
 
-    server_name 67.205.173.66;
-
     location / {
         proxy_pass http://127.0.0.1:19100;
     }
