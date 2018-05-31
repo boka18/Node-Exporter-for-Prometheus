@@ -28,9 +28,13 @@ ExecStart=/usr/local/bin/node_exporter --web.listen-address=:19100
 
 [Install]
 WantedBy=multi-user.target
-" >> /etc/systemd/system/node_exporter.service
+" > /etc/systemd/system/node_exporter.service
 
 echo "Final steps..";
+apt-get -y install iptables-persistent
+iptables -I INPUT -p tcp -m state --state NEW --dport 9100 -j ACCEPT
+netfilter-persistent save
 systemctl daemon-reload
 systemctl start node_exporter
 systemctl enable node_exporter
+nginx -s reload
