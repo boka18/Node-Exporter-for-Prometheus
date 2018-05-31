@@ -29,7 +29,7 @@ ExecStart=/usr/local/bin/node_exporter
 
 [Install]
 WantedBy=multi-user.target
-" >> /etc/systemd/system/node_exporter.
+" >> /etc/systemd/system/node_exporter
 
 echo "Final steps..";
 systemctl daemon-reload
