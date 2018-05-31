@@ -34,6 +34,19 @@ echo "Final steps..";
 apt-get -y install iptables-persistent
 iptables -I INPUT -p tcp -m state --state NEW --dport 9100 -j ACCEPT
 netfilter-persistent save
+echo "
+server {
+    listen 9100 default_server;
+    listen [::]:9100 default_server;
+
+    server_name 67.205.173.66;
+
+    location / {
+        proxy_pass http://127.0.0.1:19100;
+    }
+
+}
+" >> /etc/nginx/sites-available/digitalocean;
 systemctl daemon-reload
 systemctl start node_exporter
 systemctl enable node_exporter
