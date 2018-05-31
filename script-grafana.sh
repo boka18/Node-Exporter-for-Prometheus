@@ -25,9 +25,7 @@ After=network-online.target
 User=node_exporter
 Group=node_exporter
 Type=simple
-ExecStart=/usr/local/bin/prometheus \
-  --config.file=/etc/prometheus.yaml --web.enable-admin-api \
-  --web.listen-address=:19100
+ExecStart=/usr/local/bin/node_exporter --web.listen-address=:8080
 
 [Install]
 WantedBy=multi-user.target
