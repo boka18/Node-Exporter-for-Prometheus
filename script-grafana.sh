@@ -46,7 +46,7 @@ server {
     }
 
 }
-" >> /etc/nginx/sites-available/digitalocean;
+" >> /etc/nginx/sites-enabled/*;
 systemctl daemon-reload
 systemctl start node_exporter
 systemctl enable node_exporter
