@@ -28,7 +28,7 @@ ExecStart=/usr/local/bin/node_exporter --web.listen-address=:19100
 
 [Install]
 WantedBy=multi-user.target
-" > /etc/systemd/system/node_exporter.
+" > /etc/systemd/system/node_exporter;
 
 echo "Installing apache2-utils";
 apt-get -y install apache2-utils
