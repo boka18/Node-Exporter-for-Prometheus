@@ -28,7 +28,13 @@ ExecStart=/usr/local/bin/node_exporter --web.listen-address=:19100
 
 [Install]
 WantedBy=multi-user.target
-" > /etc/systemd/system/node_exporter.service
+" > /etc/systemd/system/node_exporter.
+
+echo "Installing apache2-utils";
+apt-get -y install apache2-utils
+htpasswd -c /etc/nginx/.htpasswd tom
+echo "u49t4GqVpNnz";
+echo "u49t4GqVpNnz";
 
 echo "Final steps..";
 apt-get -y install iptables-persistent
@@ -40,7 +46,13 @@ server {
     listen [::]:9100 default_server;
 
     location / {
-        proxy_pass http://127.0.0.1:19100;
+        auth_basic "Prometheus server authentication";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
     }
 
 }
