@@ -32,9 +32,9 @@ WantedBy=multi-user.target
 
 echo "Installing apache2-utils";
 apt-get -y install apache2-utils
-htpasswd -c /etc/nginx/.htpasswd tom
-echo "u49t4GqVpNnz";
-echo "u49t4GqVpNnz";
+echo "Please input the username and than the password:";
+read username;
+htpasswd -c /etc/nginx/.htpasswd $username
 
 echo "Final steps..";
 apt-get -y install iptables-persistent
