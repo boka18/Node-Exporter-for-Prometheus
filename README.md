@@ -1,4 +1,9 @@
 # NodeExporter / Prometheus
+**BEFORE YOU BEGIN**
+**Make sure you have nginx installed**
+**Run the script only once. If you run it more than once you will have to clear the last lines in /etc/ngingx/sites-enables/<yourWebsite>**
+
+
 *Installation:* 
 1. Clone the repo
 2. cd Node-Exporter-for-Prometheus
