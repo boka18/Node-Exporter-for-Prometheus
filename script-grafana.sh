@@ -48,12 +48,12 @@ server {
     location / {
         auth_basic "Prometheus server authentication";
         auth_basic_user_file /etc/nginx/.htpasswd;
-        proxy_pass http://127.0.0.1:19100;
+        proxy_pass http://localhost:19100;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
     }
 
 }
