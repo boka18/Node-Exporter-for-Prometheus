@@ -46,7 +46,7 @@ server {
     listen [::]:9100 default_server;
 
     location / {
-        auth_basic "Prometheus server authentication";
+        auth_basic '"Prometheus server authentication"';
         auth_basic_user_file /etc/nginx/.htpasswd;
         proxy_pass http://localhost:19100;
         proxy_http_version 1.1;
