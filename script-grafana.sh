@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Creating two users";
+echo "Script started..";
 useradd --no-create-home --shell /bin/false node_exporter
 
 echo "Downloading Node Exporter";
@@ -24,11 +24,45 @@ After=network-online.target
 [Service]
 User=node_exporter
 Group=node_exporter
-ExecStart=/usr/local/bin/node_exporter --web.listen-address=:19100
+ExecStart=/usr/local/bin/node_exporter --web.listen-address=:19100 --collectors.supervisor.url=collector.supervisord.url=http://127.0.0.1:9001/
 
 [Install]
 WantedBy=multi-user.target
 " > /etc/systemd/system/node_exporter.service;
+
+echo "Installing supervisord";
+apt-get -y install python-setuptools
+easy_install supervisor
+mkdir /etc/supervisor
+echo_supervisord_conf > /etc/supervisor/supervisord.conf
+echo "
+[include]
+files = conf.d/*.conf
+
+[inet_http_server]
+port=*:9001
+" >> /etc/supervisor/supervisord_conf;
+mkdir /etc/supervisor/conf.d
+touch /etc/systemd/system/supervisord.service
+echo "
+[Unit]
+Description=Supervisor daemon
+Documentation=http://supervisord.org
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+ExecStop=/usr/local/bin/supervisorctl $OPTIONS shutdown
+ExecReload=/usr/local/bin/supervisorctl $OPTIONS reload
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+Alias=supervisord.service
+" >> /etc/systemd/system/supervisord.service;
+systemctl start supervisord.service
 
 echo "Installing apache2-utils";
 apt-get -y install apache2-utils
