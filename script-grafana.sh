@@ -62,6 +62,7 @@ RestartSec=42s
 WantedBy=multi-user.target
 Alias=supervisord.service
 " >> /etc/systemd/system/supervisord.service;
+systemctl daemon-reload
 systemctl start supervisord.service
 
 echo "Installing apache2-utils";
