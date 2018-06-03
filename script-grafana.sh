@@ -41,7 +41,7 @@ files = conf.d/*.conf
 
 [inet_http_server]
 port=*:9001
-" >> /etc/supervisor/supervisord_conf;
+" >> /etc/supervisor/supervisord.conf;
 mkdir /etc/supervisor/conf.d
 touch /etc/systemd/system/supervisord.service
 echo "
@@ -73,6 +73,7 @@ htpasswd -c /etc/nginx/.htpasswd $username
 echo "Final steps..";
 apt-get -y install iptables-persistent
 iptables -I INPUT -p tcp -m state --state NEW --dport 9100 -j ACCEPT
+iptables -I INPUT -p tcp -m state --state NEW --dport 9001 -j ACCEPT
 netfilter-persistent save
 echo "
 server {
