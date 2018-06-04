@@ -1,5 +1,15 @@
 #!/bin/bash
 
+echo "Checking the environment.."
+apt-get -y install pcregrep
+OLO="$(pcregrep -M  'server.*\n.*listen 9100' /etc/nginx/sites-enabled/default)"; len=${#OLO};
+if [[ "$len" -gt "5" ]]
+then
+        echo 'Please modify the sites-enabled/* in nginx'; exit
+else
+        echo 'We are good to go..'
+fi
+
 echo "Script started..";
 useradd --no-create-home --shell /bin/false node_exporter
 read -p "Would you like to install supervisord (y/n)?" choice
@@ -74,16 +84,28 @@ then
     systemctl start supervisord.service
 fi
 
-echo "Installing apache2-utils";
-apt-get -y install apache2-utils
-echo "Please input the username and than the password:";
-read username;
-htpasswd -c /etc/nginx/.htpasswd $username
+read -p "Would you like to add credentials to the node_exporter so random people can't access it? (y/n)?" credent
+case "$credent" in 
+  y|Y ) echo "yes";;
+  n|N ) echo "no";;
+  * ) echo "invalid";;
+esac
+
+if [$credent == 'y']
+then
+    echo "Installing apache2-utils";
+    apt-get -y install apache2-utils
+    echo "Please input the username and than the password:";
+    read username;
+    htpasswd -c /etc/nginx/.htpasswd $username
+else
+    touch /etc/nginx/.htpasswd
+fi
 
 echo "Final steps..";
 apt-get -y install iptables-persistent
-iptables -I INPUT -p tcp -m state --state NEW --dport 9100 -j ACCEPT
-iptables -I INPUT -p tcp -m state --state NEW --dport 9001 -j ACCEPT
+ufw allow 9100
+ufw allow 9001
 netfilter-persistent save
 echo "
 server {
