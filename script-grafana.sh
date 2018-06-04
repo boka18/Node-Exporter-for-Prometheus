@@ -92,7 +92,7 @@ case "$credent" in
   * ) echo "invalid";;
 esac
 
-if [$credent == 'y']
+if [$credent = "y"]
 then
     echo "Installing apache2-utils";
     apt-get -y install apache2-utils
