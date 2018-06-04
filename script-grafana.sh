@@ -1,8 +1,9 @@
 #!/bin/bash
 
 echo "Checking the environment.."
-apt-get -y install pcregrep
-OLO="$(pcregrep -M  'server.*\n.*listen 9100' /etc/nginx/sites-enabled/default)"; len=${#OLO};
+apt-get -y install -qq pcregrep
+OUTPUT="$(ls /etc/nginx/sites-enabled)"
+OLO="$(pcregrep -M  'server.*\n.*listen 9100' /etc/nginx/sites-enabled/$OUTPUT)"; len=${#OLO};
 if [[ "$len" -gt "5" ]]
 then
         echo 'Please modify the sites-enabled/* in nginx'; exit
