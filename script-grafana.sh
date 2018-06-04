@@ -55,31 +55,31 @@ then
     mkdir /etc/supervisor
     echo_supervisord_conf > /etc/supervisor/supervisord.conf
     echo "
-    [include]
-    files = conf.d/*.conf
+[include]
+files = conf.d/*.conf
 
-    [inet_http_server]
-    port=*:9001
+[inet_http_server]
+port=*:9001
     " >> /etc/supervisor/supervisord.conf;
     mkdir /etc/supervisor/conf.d
     touch /etc/systemd/system/supervisord.service
     echo "
-    [Unit]
-    Description=Supervisor daemon
-    Documentation=http://supervisord.org
-    After=network.target
+[Unit]
+Description=Supervisor daemon
+Documentation=http://supervisord.org
+After=network.target
 
-    [Service]
-    ExecStart=/usr/local/bin/supervisord -n -c /etc/supervisor/supervisord.conf
-    ExecStop=/usr/local/bin/supervisorctl $OPTIONS shutdown
-    ExecReload=/usr/local/bin/supervisorctl $OPTIONS reload
-    KillMode=process
-    Restart=on-failure
-    RestartSec=42s
+[Service]
+ExecStart=/usr/local/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+ExecStop=/usr/local/bin/supervisorctl $OPTIONS shutdown
+ExecReload=/usr/local/bin/supervisorctl $OPTIONS reload
+KillMode=process
+Restart=on-failure
+RestartSec=42s
 
-    [Install]
-    WantedBy=multi-user.target
-    Alias=supervisord.service
+[Install]
+WantedBy=multi-user.target
+Alias=supervisord.service
     " >> /etc/systemd/system/supervisord.service;
     systemctl daemon-reload
     systemctl start supervisord.service
