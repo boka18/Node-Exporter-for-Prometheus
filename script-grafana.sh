@@ -47,7 +47,7 @@ ExecStart=/usr/local/bin/node_exporter --web.listen-address=:19100 --collectors.
 WantedBy=multi-user.target
 " > /etc/systemd/system/node_exporter.service;
 
-if [$choice = "y"]
+if [[ "$choice" -eq "y" ]]
 then
     echo "Installing supervisord";
     apt-get -y install python-setuptools
@@ -92,7 +92,7 @@ case "$credent" in
   * ) echo "invalid";;
 esac
 
-if [$credent = "y"]
+if [[ "$credent" -eq "y" ]]
 then
     echo "Installing apache2-utils";
     apt-get -y install apache2-utils
