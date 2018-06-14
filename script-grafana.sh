@@ -125,10 +125,10 @@ server {
 
 }
 " >> /etc/nginx/sites-enabled/$selected_site;
-systemctl daemon-reload
-systemctl start node_exporter.service
-systemctl enable node_exporter.service
 nginx -s reload
         fi
 fi
+systemctl daemon-reload
+systemctl start node_exporter.service
+systemctl enable node_exporter.service
 echo "Script completed";
